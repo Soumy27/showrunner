@@ -86,7 +86,7 @@ The same template makes three kinds of series. You pick one when you create the 
 | Format | What the writer does | Proof so far |
 |---|---|---|
 | `fact` | Finds and sources a surprising fact | One full run |
-| `story` | Invents an original story, marked `Fiction:` | See Limits |
+| `story` | Invents an original story, marked `Fiction:` | One unfinished run: [first cut](examples/twodots-run/reel-first-cut.mp4), no cold read or captions |
 | `character` | Writes a story led by a simple flat cartoon character, starting from `tools/character-starter.html` | Starter page only; no agent run |
 
 Canon to paste for the last two is in [`examples/formats/`](examples/formats/).
@@ -162,10 +162,10 @@ curl -b jar -X PATCH "$SERVER/gateway/documents/$DOC_ID" -H 'Content-Type: appli
 
 - **Motion graphics, not realistic video.** It can make type, charts and diagrams on many topics. It can't make
   real people or filmed scenes. The style is locked by canon, so a new look needs a canon change or a new series.
-- **Voice not yet run by the agents.** The writer and renderer now have voice instructions, but no agent has used
-  them. `reel-voiced.mp4` was made by running the tool directly on the finished reel. Its timing is measured, and
-  no check confirms how it sounds or how each word is pronounced.
-- **One finished fact episode so far.** Requests on other topics are untested, and so are the `story` and `character` formats until a run says otherwise.
+- **Voice is unheard.** The Two Dots renderer used the voice tool and measured the timing. `reel-voiced.mp4` was
+  made by running the tool directly on the fact reel. No check confirms how either sounds.
+- **One finished episode so far.** A second run, the [Two Dots story](examples/twodots-run/evidence.md), reached a first cut with voice before the usage limit stopped it. The `character` format has had no agent run.
+- **Cloning may need your approval.** In the Two Dots run, Claude Code's auto mode refused to run the checker from the cloned repository until the person approved it in chat.
 - **Characters are simple.** They are flat shapes drawn with code, so expect charm rather than studio animation.
 - **Nobody has watched it in motion.** The agents checked still frames and measured the audio.
 - **No audience data.** The cold reader is an agent reading frames. No real viewer has seen a reel.
@@ -210,6 +210,7 @@ check-canon.py                       the continuity checker
 tools/                               render page, frame renderer, beat maker and voice
 tests/test_check_canon.py            checker tests
 examples/soundsfake-run/             the reel, captions and record of the main run
+examples/twodots-run/                the unfinished story run: first cut, script and record
 examples/mattermost-run/             an earlier test run, in Mattermost
 examples/live-run/                   the first test run, in Switch's own rooms
 examples/formats/                    canon to paste for story and character series
