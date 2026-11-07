@@ -1,0 +1,10 @@
+[
+  {"at": 0.1, "until": 4.6, "text": "Today, a human body replaces about 330 billion cells."},
+  {"at": 5.2, "until": 10.0, "text": "Sounds fake. Is true. And it happens every day."},
+  {"at": 10.15, "until": 13.0, "text": "And it has a weight."},
+  {"at": 13.2, "until": 18.0, "text": "About 80 grams of cells, daily, give or take 20."},
+  {"at": 18.15, "until": 20.0, "text": "Which cells?"},
+  {"at": 20.2, "until": 25.0, "text": "Close to 90 percent are blood cells."},
+  {"at": 25.1, "until": 27.0, "text": "Tomorrow? All over again."},
+  {"at": 27.1, "until": 30.0, "text": "Source: Nature Medicine, 2021."}
+]

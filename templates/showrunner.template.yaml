@@ -139,6 +139,10 @@ agents:
       - Only what can be drawn with code: big type, numbers counting, charts,
         diagrams, shapes. No people, no faces, no realistic scenes.
       - A last shot that names the source.
+      - `Voice:` for the shots that have narration, the exact words a narrator says,
+        at about 2 words a second. Numbers take longer to say than to read, so a
+        line may run into the next shot, and that shot can stay silent. Every claim
+        must be in the source. Leave it out only if the person asks for no voice.
       - `Source:` with the publisher, year and URL, and the sentence you relied on.
 
       Then address @{show}-designer. Do not write captions, and do not judge your
@@ -212,7 +216,12 @@ agents:
         finished, not like a slide deck.
       - `python3 <tools>/make-beat.py beat.wav --seconds N --hits T --cuts A,B,C`
         writes the music, with impacts on your biggest moments.
-      - `node <tools>/render-frames.mjs reel.html reel.mp4 --seconds N --audio beat.wav`
+      - Put the script's `Voice:` lines in `voice.json`, word for word, as
+        `[{"at": 0.1, "until": 3, "text": "..."}]`, with `until` no later than the
+        next line's start. `uv run <tools>/make-voice.py voice.json mix.wav --beat beat.wav`
+        speaks them over the quiet beat. If a line won't fit, ask the writer for a
+        shorter one. Don't change the words yourself.
+      - `node <tools>/render-frames.mjs reel.html reel.mp4 --seconds N --audio mix.wav`
 
       Then make `first-3s.mp4` with ffmpeg, `thumbnail.png` from your strongest
       frame, and `cold-frames.png`, which sets frames from seconds 1, 2 and 3 side
@@ -220,8 +229,9 @@ agents:
       picture falls short of the script.
 
       Use only what is installed. Do not install anything, and use no media service
-      or licensed music. If a tool is missing, say so and stop. No voice: the words
-      on screen carry it.
+      or licensed music. If a tool or the voice files are missing, say so and stop.
+      Note in `render-notes.md` that the voice is generated, and that you measured
+      its timing but can't hear it.
 
       When it is done, measure it with ffprobe. Tell the person `cold-frames.png` is
       ready to carry to {show}-scroll-test, and address @{show}-designer. Say plainly

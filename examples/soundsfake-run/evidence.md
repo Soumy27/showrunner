@@ -78,6 +78,12 @@ The second verdict isn't a clean cold read, and neither is audience data.
 - **Nobody has listened to it.** The agents checked still frames and measured the audio. The reel
   needs a person to watch and hear it before posting.
 
+## The voiced copy, added after the run
+
+`reel-voiced.mp4` is `reel.mp4` with a generated narrator from `tools/make-voice.py` and `voice.json`. An
+assistant wrote those lines from the agents' script and ran the tool directly. No agent did this step. The
+narration moves "Sounds fake. Is true." to the third shot, because the hook's words take over four seconds to say.
+
 ## What the agents' records show
 
 Outside Switch's own tools, the agents used local file and shell tools, web search and page fetches.

@@ -18,6 +18,8 @@ made from one request in Mattermost: a human body replaces about 330 billion cel
 [`evidence.md`](examples/soundsfake-run/evidence.md) has the record of the run.
 
 It is code-drawn motion graphics: bold type, counters and charts, with no people.
+[`reel-voiced.mp4`](examples/soundsfake-run/reel-voiced.mp4) is the same picture with a generated narrator
+added afterwards using `tools/make-voice.py`. The agents didn't make that version; see Limits.
 
 ## The problem
 
@@ -102,13 +104,22 @@ most likely to creep in:
 
 `tools/render-frames.mjs` draws an HTML page frame by frame in headless Chrome and encodes it with ffmpeg.
 `tools/reel-starter.html` is the starting page, and `tools/make-beat.py` generates the music.
+`tools/make-voice.py` speaks timed lines with a local voice over that beat, and refuses lines that can't fit.
 
 ## Run it
 
 You need [Switch Console](https://github.com/sandbox-quantum/switch/releases/latest) and a signed-in coding
 agent. Its CLI must be recent: in testing, version 2.1.92 hung on approvals and 2.1.318 worked. The renderer
-needs Node 22, Google Chrome in `/Applications` (or `CHROME_PATH`), ffmpeg, and Python with numpy. No media
-API key is needed. Docker with its Compose plugin is needed to run Mattermost locally. On Apple silicon with
+needs Node 22, Google Chrome in `/Applications` (or `CHROME_PATH`), ffmpeg, Python with numpy, and
+[uv](https://docs.astral.sh/uv/) for the voice. The voice files are about 350 MB and are downloaded once:
+
+```bash
+mkdir -p ~/.cache/showrunner-voice && cd ~/.cache/showrunner-voice
+curl -LO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+curl -LO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+```
+
+No media API key is needed. Docker with its Compose plugin is needed to run Mattermost locally. On Apple silicon with
 Colima, start it with `colima start --vz-rosetta`, because Mattermost's Intel-only image crashed under the
 default emulation.
 
@@ -138,8 +149,10 @@ curl -b jar -X PATCH "$SERVER/gateway/documents/$DOC_ID" -H 'Content-Type: appli
 ## Limits
 
 - **Motion graphics, not realistic video.** It can make type, charts and diagrams on many topics. It can't make
-  real people or filmed scenes, and there's no voice. The style is locked by canon, so a new look needs a canon
-  change or a new series.
+  real people or filmed scenes. The style is locked by canon, so a new look needs a canon change or a new series.
+- **Voice not yet run by the agents.** The writer and renderer now have voice instructions, but no agent has used
+  them. `reel-voiced.mp4` was made by running the tool directly on the finished reel. Its timing is measured, and
+  no check confirms how it sounds or how each word is pronounced.
 - **One topic so far.** Only one episode of this series has been made, so requests on other topics are untested.
 - **Nobody has watched it in motion.** The agents checked still frames and measured the audio.
 - **No audience data.** The cold reader is an agent reading frames. No real viewer has seen a reel.
@@ -181,7 +194,7 @@ search was limited, so this isn't a claim that nothing else does it.
 ```
 templates/showrunner.template.yaml   the whole workflow
 check-canon.py                       the continuity checker
-tools/                               render page, frame renderer and beat maker
+tools/                               render page, frame renderer, beat maker and voice
 tests/test_check_canon.py            checker tests
 examples/soundsfake-run/             the reel, captions and record of the main run
 examples/mattermost-run/             an earlier test run, in Mattermost
