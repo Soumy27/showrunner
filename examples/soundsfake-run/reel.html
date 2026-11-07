@@ -1,0 +1,200 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Sounds Fake, Is True: Episode 1</title>
+<style>
+:root{--ink:#0b0b0f;--paper:#f7f3ea;--co:#ff6a3d;--ye:#ffe14d;--mi:#2fe39a}
+*{box-sizing:border-box;margin:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink);font-family:"Avenir Next Condensed"}
+.s{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:0 64px;overflow:hidden}
+.w{display:block;width:max-content;max-width:none;white-space:nowrap;font-weight:800;line-height:.9;letter-spacing:-.012em;text-transform:uppercase;font-variant-numeric:tabular-nums;will-change:transform;transform-origin:left center}
+.c{transform-origin:center center}
+/* Shot 1: two identical layers. The top one is coral with ink type, clipped at the rising edge. */
+.layer{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 64px}
+.block{background:var(--co);color:var(--ink)}
+.block .ye{color:var(--ink)}
+.hook .w[data-fit],.hook .counter{transform-origin:center center}
+.ye{color:var(--ye)}
+.gap{height:44px;flex:none}
+
+/* The count stack: same size and place in shots 3 and 8; same sizes in shot 1. */
+.stack{position:absolute;left:64px;top:345px;width:952px}
+.counter{display:flex;width:952px;font-weight:800;line-height:.82;letter-spacing:0;font-variant-numeric:tabular-nums}
+.counter i{display:block;flex:0 0 33.3333%;font-style:normal;text-align:left}
+.label{position:absolute;left:64px;top:1265px;width:952px}
+.panel{position:absolute;left:0;width:1080px;background:var(--ink);padding:14px 64px 10px}
+
+/* Shot 5 */
+.w5{position:relative}
+.n80{display:inline-flex}
+.n80 i{display:block;font-style:normal;text-align:left}
+.bar{position:absolute;left:64px;top:1100px;height:150px;background:var(--co)}
+.bracket{position:absolute;left:635.2px;width:380.8px;top:1072px;height:230px;border:16px solid var(--ink);border-top:0}
+.blabel{position:absolute;left:635.2px;width:380.8px;top:1320px;font-size:190px;font-weight:800;line-height:.9;text-align:center;color:var(--ink);text-transform:uppercase}
+
+/* Shot 7 */
+.grid{display:grid;grid-template-columns:repeat(10,88px);grid-auto-rows:88px;gap:8px;width:952px;flex:none}
+.grid b{display:block;background:var(--paper)}
+</style></head><body>
+
+<!-- 1. Hook -->
+<section class="s hook" data-t="0" data-d="3" data-pop="1.12" style="background:var(--ink);color:var(--paper)">
+  <div class="layer" id="hook">
+  <span class="w" data-fit p="0">Today a human body</span>
+  <span class="w" p=".5" style="font-size:200px">Replaces</span>
+  <div class="gap"></div>
+  <span class="w ye" p="1.5" style="font-size:200px">About</span>
+  <div class="counter ye" p="1.5" data-counter data-at="-99" data-for="1" data-to="330"><i></i><i></i><i></i></div>
+  <span class="w ye" data-fit p="1.5">Billion</span>
+  <div class="gap"></div>
+  <span class="w" p="1" style="font-size:200px">Cells</span>
+  </div>
+</section>
+
+<!-- 2. Title -->
+<section class="s" data-t="3" data-d="2" style="background:var(--ye);color:var(--ink)">
+  <div class="w c" p="0"><div style="transform:rotate(-1.6deg)">
+    <span class="w" data-fit style="will-change:auto">Sounds Fake,</span>
+    <span class="w" data-fit style="will-change:auto">Is True</span>
+  </div></div>
+</section>
+
+<!-- 3. The count -->
+<section class="s" data-t="5" data-d="5" style="background:var(--ink);color:var(--paper)">
+  <div class="stack ye">
+    <span class="w" style="font-size:200px">About</span>
+    <div class="counter" data-counter data-at="0" data-for="4.5" data-to="330"><i></i><i></i><i></i></div>
+    <span class="w" data-fit>Billion</span>
+  </div>
+  <div class="label">
+    <span class="w" data-fit>Cells replaced.</span>
+    <span class="w" data-fit>Every day.</span>
+  </div>
+</section>
+
+<!-- 4. Turn -->
+<section class="s" data-t="10" data-d="3" style="background:var(--paper);color:var(--ink)">
+  <span class="w" p="0" style="font-size:240px">It</span>
+  <span class="w" p=".5" style="font-size:240px">Has</span>
+  <span class="w" p="1" style="font-size:240px">A</span>
+  <span class="w" data-fit p="1.5">Weight.</span>
+</section>
+
+<!-- 5. The weight -->
+<section class="s" data-t="13" data-d="5" style="background:var(--paper);color:var(--ink);justify-content:flex-start;padding-top:430px">
+  <span class="w" data-fit-line p="0"><span class="n80" data-counter data-at="0" data-for="3.5" data-to="80"><i></i><i></i></span><span data-after="3.5"> ± 20</span></span>
+  <div class="gap"></div>
+  <span class="w" data-fit p="0">Grams of cells.</span>
+  <span class="w" p="0" style="font-size:190px">Daily.</span>
+  <div class="bar" data-bar data-at="0" data-for="3.5" data-to="80"></div>
+  <div class="bracket" data-after="3.5"></div>
+  <div class="blabel" data-after="3.5">± 20</div>
+</section>
+
+<!-- 6. Turn -->
+<section class="s" data-t="18" data-d="2" style="background:var(--co);color:var(--ink)">
+  <div class="c" p="0">
+    <span class="w" data-fit style="will-change:auto">Which</span>
+    <span class="w" data-fit style="will-change:auto">Cells?</span>
+  </div>
+</section>
+
+<!-- 7. The split -->
+<section class="s" data-t="20" data-d="5" style="background:var(--ink);color:var(--paper)">
+  <span class="w" data-fit p="0">Close to 90%</span>
+  <span class="w" data-fit p="0">are blood cells</span>
+  <div class="gap"></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- 8. Reset -->
+<section class="s" data-t="25" data-d="2" style="background:var(--ink);color:var(--co)">
+  <div class="stack">
+    <span class="w" style="font-size:200px">About</span>
+    <div class="counter" data-counter data-at="0" data-for="4.5" data-to="330"><i></i><i></i><i></i></div>
+    <span class="w" data-fit>Billion</span>
+  </div>
+  <div class="panel" style="top:150px;color:var(--paper)"><span class="w" data-fit p="0">Tomorrow?</span></div>
+  <div class="panel" style="top:1218px;color:var(--paper)"><span class="w" data-fit p="0">All over again.</span></div>
+</section>
+
+<!-- 9. Source -->
+<section class="s" data-t="27" data-d="3" style="background:var(--paper);color:var(--ink)">
+  <div class="c" p="0">
+    <span class="w" data-fit style="will-change:auto">Source:</span>
+    <div class="gap"></div>
+    <span class="w" data-fit style="will-change:auto">Nature Medicine,</span>
+    <span class="w" style="font-size:180px;will-change:auto">2021</span>
+    <div class="gap"></div>
+    <span class="w" style="font-size:145px;will-change:auto">Sender &amp; Milo</span>
+  </div>
+</section>
+
+<!-- Thumbnail idea 1. Starts after the reel's 30s, so it is only drawn by seeking to 31. -->
+<section class="s" data-t="31" data-d="1" style="background:var(--ink);color:var(--paper)">
+  <span class="w ye" style="font-size:240px">About</span>
+  <div class="counter ye" data-counter data-at="-99" data-for="1" data-to="330"><i></i><i></i><i></i></div>
+  <span class="w ye" data-fit>Billion</span>
+  <span class="w" style="font-size:300px">Cells</span>
+</section>
+
+<script>
+const WIDTH=952;
+const hook=document.getElementById('hook');
+const block=hook.cloneNode(true);block.removeAttribute('id');block.classList.add('block');hook.after(block);
+const grid=document.getElementById('grid');
+for(let i=0;i<100;i++)grid.appendChild(document.createElement('b'));
+const SCENES=[...document.querySelectorAll('.s')];
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const back=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const out=x=>1-Math.pow(1-clamp(x),3);
+// The value reaches its target only on the exact lock frame, then stays.
+const count=(st,at,dur,to)=>st>=at+dur?to:Math.floor(to*out((st-at)/dur));
+const FLIPS=[0,.5,1,1.5,2,2.5,3,3.5,4];
+
+function fit(){
+  SCENES.forEach(s=>s.style.display='flex');
+  document.querySelectorAll('[data-fit]').forEach(n=>{
+    n.style.fontSize='200px';
+    n.style.fontSize=(200*WIDTH/n.getBoundingClientRect().width)+'px';
+  });
+  // Size counters on the widest digits so they sit in fixed cells and never shift.
+  document.querySelectorAll('.counter').forEach(c=>{
+    const cells=[...c.children];cells.forEach(i=>i.textContent='8');
+    c.style.fontSize='200px';c.style.width='max-content';
+    cells.forEach(i=>i.style.flex='none');
+    const w=c.getBoundingClientRect().width;
+    c.style.fontSize=(200*WIDTH/w)+'px';c.style.width='';
+    cells.forEach(i=>{i.style.flex='';i.textContent=''});
+  });
+  // Shot 5's first line fills the width with both digits and the ± 20 present.
+  const line=document.querySelector('[data-fit-line]');
+  const cells=[...line.querySelectorAll('.n80 i')];cells.forEach(i=>i.textContent='8');
+  line.style.fontSize='200px';
+  const fs=200*WIDTH/line.getBoundingClientRect().width;
+  line.style.fontSize=fs+'px';
+  const cw=cells[0].getBoundingClientRect().width;
+  cells.forEach(i=>{i.style.width=cw+'px';i.textContent=''});
+  SCENES.forEach(s=>s.style.display='none');
+}
+
+function seek(t){
+  SCENES.forEach(s=>{
+    const a=+s.dataset.t,d=+s.dataset.d,on=t>=a&&t<a+d;s.style.display=on?'flex':'none';if(!on)return;
+    const st=t-a;
+    if(s.contains(block)){const y=Math.round(1920-1280*(st-1.5));block.style.visibility=st>=1.5?'visible':'hidden';block.style.clipPath=`inset(${y}px 0 0 0)`}
+    s.querySelectorAll('[p]').forEach(n=>{const b=+n.getAttribute('p'),u=(st-b)/.2;
+      n.style.opacity=st>=b?1:0;const k=+(s.dataset.pop||1.35);n.style.transform=`scale(${k-(k-1)*back(u)})`});
+    s.querySelectorAll('[data-counter]').forEach(n=>{
+      const v=String(count(st,+n.dataset.at,+n.dataset.for,+n.dataset.to));
+      [...n.children].forEach((c,i)=>c.textContent=v[i]||'')});
+    s.querySelectorAll('[data-bar]').forEach(n=>{
+      n.style.width=(9.52*count(st,+n.dataset.at,+n.dataset.for,+n.dataset.to))+'px'});
+    s.querySelectorAll('[data-after]').forEach(n=>{n.style.visibility=st>=+n.dataset.after?'visible':'hidden'});
+    if(s.contains(grid))[...grid.children].forEach((b,i)=>{
+      const row=Math.floor(i/10);
+      b.style.background=row<9&&st>=FLIPS[row]?'var(--mi)':'var(--paper)'});
+  });
+}
+window.seek=seek;
+window.ready=document.fonts.ready.then(()=>{fit();seek(0);return true});
+</script>
+</body></html>

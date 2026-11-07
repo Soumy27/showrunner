@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Reel starter</title>
+<style>
+:root{--ink:#0b0b0f;--paper:#f7f3ea;--co:#ff6a3d;--ye:#ffe14d;--mi:#2fe39a;--re:#ff2e3e;--vi:#6d4dff}
+*{box-sizing:border-box;margin:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink);font-family:"Avenir Next Condensed","Avenir Next",sans-serif}
+.s{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:0 64px;overflow:hidden;transform-origin:50% 50%}
+.w{display:block;font-weight:800;font-size:188px;line-height:.96;letter-spacing:-.012em;text-transform:uppercase;will-change:transform}
+.xl{font-size:286px}.l{font-size:230px}.m{font-size:128px}.sm{font-size:76px;font-weight:700;letter-spacing:0}
+.mk{display:inline-block;padding:0 22px 6px;background:var(--ye);color:var(--ink);transform:rotate(-1.6deg)}
+.mono{font-family:Menlo,monospace;text-transform:none;font-weight:600;letter-spacing:-.01em}
+.half{position:absolute;left:0;right:0;height:50%;display:flex;flex-direction:column;justify-content:center;padding:0 64px}
+.tag{font-family:Menlo,monospace;font-size:40px;font-weight:700;margin-bottom:22px;text-transform:uppercase}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:64px}
+.chip{background:#1b1b24;color:var(--paper);border:3px solid #33333f;border-radius:28px;font-size:82px;font-weight:700;padding:42px 34px;text-align:center;will-change:transform}
+.chip.h{background:var(--co);color:var(--ink);border-color:var(--co)}
+.term{background:#14141b;border:3px solid #34343f;border-radius:30px;padding:44px;font-family:Menlo,monospace;font-size:62px;line-height:1.4;color:var(--paper);white-space:pre-wrap;word-break:break-word}
+.card{position:absolute;left:90px;right:90px;top:520px;height:760px;border-radius:50px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:236px;text-transform:uppercase;will-change:transform;box-shadow:0 40px 90px #0009}
+#bar{position:absolute;top:0;left:0;height:14px;background:#fff;z-index:9;mix-blend-mode:difference}
+#flash{position:absolute;inset:0;background:#fff;z-index:8;pointer-events:none}
+.url{font-family:Menlo,monospace;font-size:45px;font-weight:600;color:var(--ye);margin-top:40px}
+.glow{position:absolute;width:1500px;height:1500px;left:-210px;top:210px;border-radius:50%;background:radial-gradient(circle,#ff6a3d66,#6d4dff33 42%,transparent 68%)}
+</style></head><body>
+<div id="bar"></div><div id="flash"></div>
+
+<!-- Copy this file and replace these scenes. Each section is one shot: data-t is its start
+     and data-d its length in seconds. p="x" pops an element in x seconds into the shot,
+     sh="x" shakes it at x. data-count, data-type and data-swipe animate numbers, typing
+     and a card leaving. Keep text inside 64px margins and check stills for overflow. -->
+<section class="s" data-t="0" data-d="3" style="background:var(--ink);color:var(--paper)">
+  <span class="w" p="0">A hook that</span><span class="w l" p=".5"><span class="mk">sounds fake</span></span><span class="w" p="1" style="color:var(--co)">in three seconds</span>
+</section>
+<section class="s" data-t="3" data-d="3" style="background:var(--ye);color:var(--ink)">
+  <span class="w m" p="0">The number</span><span class="w" p=".2" style="font-size:430px"><span data-count="42" data-at=".2" data-for=".8">0</span></span><span class="w m" p="1.1">what it means</span>
+</section>
+<section class="s" data-t="6" data-d="3" style="background:var(--ink);color:var(--paper)">
+  <span class="w" p="0">Say the source</span><div class="url" p=".5">Source: publisher, year</div>
+</section>
+
+<script>
+const SCENES=[...document.querySelectorAll('.s')];
+const T=SCENES.reduce((m,s)=>Math.max(m,+s.dataset.t+ +s.dataset.d),0),CUTS=[...document.querySelectorAll('.s')].map(s=>+s.dataset.t);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const back=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2)};
+const out=x=>1-Math.pow(1-clamp(x),3);
+// A repeatable shake: the same frame always gets the same offset.
+const shake=(st,amp)=>{const k=Math.floor(st*30);return [Math.sin(k*12.9898)*amp,Math.cos(k*78.233)*amp]};
+const texts=new Map();
+function seek(t){
+  document.getElementById('bar').style.width=(t/T*100)+'%';
+  const since=Math.min(...CUTS.map(c=>t>=c?t-c:99));
+  document.getElementById('flash').style.opacity=t>0.04&&since<.07?.55:0;
+  document.querySelectorAll('.s').forEach(s=>{
+    const a=+s.dataset.t,d=+s.dataset.d,on=t>=a&&t<a+d;s.style.display=on?'flex':'none';if(!on)return;
+    const st=t-a;let tr=`scale(${1+.035*st/d})`;
+    if(s.hasAttribute('sh')){const f=clamp(1-(st-(+s.getAttribute('sh')))/.45);const [x,y]=shake(st,26*f);tr+=` translate(${x}px,${y}px)`}
+    s.style.transform=tr;
+    s.querySelectorAll('[p]').forEach(n=>{const b=+n.getAttribute('p'),u=(st-b)/.2;
+      n.style.opacity=st>=b?1:0;let m=`scale(${1.12-.12*back(u)})`;
+      if(n.hasAttribute('sh')){const f=clamp(1-(st-(+n.getAttribute('sh')))/.5);const [x,y]=shake(st,14*f);m+=` translate(${x}px,${y}px)`}
+      n.style.transform=m;n.style.transformOrigin='left center';if(s.style.textAlign==='center')n.style.transformOrigin='center'});
+    s.querySelectorAll('[data-count]').forEach(n=>{n.textContent=Math.round(+n.dataset.count*out((st-+n.dataset.at)/+n.dataset.for))});
+    s.querySelectorAll('[data-type]').forEach(n=>{if(!texts.has(n))texts.set(n,n.textContent);const full=texts.get(n);n.textContent=full.slice(0,Math.floor(Math.max(0,st-+n.dataset.type)*+n.dataset.rate))});
+    s.querySelectorAll('[data-swipe]').forEach(n=>{const u=out((st-+n.dataset.swipe+.25)/.3);n.style.transform=`translateX(${-1200*u}px) rotate(${-14*u}deg)`});
+  });
+}
+window.seek=seek;
+window.ready=document.fonts.ready.then(()=>{seek(0);return true});
+</script>
+</body></html>

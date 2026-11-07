@@ -166,6 +166,7 @@ EXAMPLES = [
     ("planted mistakes", "examples/ep-07", "examples/series-canon.md", 1, "drifted=2  pass=6"),
     ("live run", "examples/live-run", "examples/live-run/canon.md", 0, "drifted=0  pass=8"),
     ("Mattermost run", "examples/mattermost-run", "examples/mattermost-run/canon.md", 0, "drifted=0  pass=8"),
+    ("Sounds Fake run", "examples/soundsfake-run", "examples/soundsfake-run/canon.md", 0, "drifted=0  pass=8"),
 ]
 for name, episode, canon, expect_code, expect_in in EXAMPLES:
     p = subprocess.run([sys.executable, CHK, episode, "--canon", canon],
