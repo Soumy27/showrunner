@@ -1,7 +1,8 @@
 # Switch Showrunner: a writers' room that turns one idea into a reel ready to post.
 #
-# You bring an idea. Seven agents find the facts, write the script, generate the
-# reel with code, test the hook cold and draft the captions. You decide what to post.
+# You bring an idea. Seven agents write the script, generate the reel with code,
+# test the hook cold and draft the captions. You decide what to post. A series can
+# be sourced facts, an original story, or a story with a simple cartoon character.
 #
 # Three rooms and seven agents. The series canon is a document this template
 # declares, so Switch records no agent as its creator, and
@@ -26,11 +27,56 @@ params:
     default: >-
       Sounds Fake, Is True. A 30-second faceless series: one surprising fact per
       episode, true and sourced, told with bold animated type and charts.
+  format:
+    type: string
+    label: Series format
+    description: "fact, story or character. See the README for the canon to use with story and character."
+    pattern: "fact|story|character"
+    default: fact
   episode_length:
     type: string
     label: Episode length
     description: Target runtime. The writer budgets shots against it.
     default: 30s
+  canon_show:
+    type: string
+    label: Canon, the show
+    description: The locked rules for what the show is. Agents can't change these after creation.
+    multiline: true
+    input: advanced
+    default: |-
+      - attr: show.title
+        value: Sounds Fake, Is True
+        required: true
+      - attr: show.proof
+        value: Source:
+        required: true
+      - attr: show.people
+        value: no people on screen
+        forbid: [talking head, presenter, actor, realistic person, stock footage]
+        required: true
+  canon_look:
+    type: string
+    label: Canon, the look
+    description: The locked rules for how the show looks and sounds.
+    multiline: true
+    input: advanced
+    default: |-
+      - attr: look.type
+        value: giant condensed uppercase type
+        forbid: [serif, handwritten, script font]
+        required: true
+      - attr: look.palette
+        value: ink, paper, coral, yellow, mint
+        forbid: [pastel, gradient mesh, neon purple]
+        required: true
+      - attr: look.motion
+        value: hard cuts on the beat
+        forbid: [slow fade, ken burns]
+        required: true
+      - attr: look.audio
+        value: narrator over a quiet generated beat
+        required: true
   toolkit_repo:
     type: string
     label: Showrunner repository
@@ -76,9 +122,11 @@ agents:
       1. Check the script and prompts against canon. Quote the canon `attr`,
          quote the contradicting line, and say which you think is wrong.
 
-      2. Check the fact. Open the writer's source yourself. Every number and claim
-         on screen must match what the source says. If it doesn't, stop the
-         episode and say exactly what differs.
+      2. The series format is {format}. For fact, open the writer's source
+         yourself. Every number and claim on screen or spoken must match what the
+         source says. If it doesn't, stop the episode and say exactly what differs.
+         For story or character, check that the script says `Fiction:`, presents
+         nothing invented as real, and doesn't copy an existing character or work.
 
       3. Run the checker. You run it, not the designer, because an agent should
          not grade its own work. When the designer says an episode is ready:
@@ -88,7 +136,7 @@ agents:
            in your working directory, overwriting any older copy
          - run `python3 <path>/check-canon.py episodes/ep-NN --canon canon.md`
          - post the output verbatim and say whether the exit code was 0
-         - if it was 0 and the fact holds, address @{show}-renderer to start
+         - if it was 0 and step 2 holds, address @{show}-renderer to start
          Never edit canon.md or expected values to get a clean result.
 
       4. Propose canon changes as a diff. When an episode genuinely establishes
@@ -108,7 +156,7 @@ agents:
 
   - name: "{show}-writer"
     display_name: "{show} writer"
-    description: Finds a true, surprising fact and writes a script built for bold visuals
+    description: Writes a script built for strong visuals, from a sourced fact or an original story
     addressing: owner-agents
     provider: "{provider}"
     location: "{location}"
@@ -121,10 +169,17 @@ agents:
 
       The series premise is: {premise}
 
-      Search the web for one fact that sounds impossible and is true. Open the
-      source and read it. Prefer a primary source. Never use a number you did not
-      see in the source. If you cannot find a solid source, say so and pick
-      another fact.
+      The series format is {format}:
+
+      - fact: search the web for one fact that sounds impossible and is true. Open
+        the source and read it. Prefer a primary source. Never use a number you did
+        not see in the source. If you cannot find a solid source, say so and pick
+        another fact.
+      - story: invent an original story from the person's idea, with a beginning, a
+        turn and an ending that pays off. Don't base it on real people or an
+        existing work, and don't present it as true.
+      - character: the same as story, led by one simple, flat, original cartoon
+        character drawn with code. It must not resemble any existing character.
 
       Ask the person for the latest pattern from the cold audience before you
       write a hook. You cannot read {show}-scroll-test because you are not a
@@ -132,18 +187,21 @@ agents:
 
       Write the episode in this room and to `episodes/ep-NN/script.md`:
 
-      - The hook as shot 1, three seconds at most. It must sound fake.
+      - The hook as shot 1, three seconds at most. It must make a stranger stop.
       - Numbered shots to {episode_length}: the exact words on screen, what moves,
         which chart or diagram, and a duration. The durations must add up. State
         the total. Six to ten words at most on screen at a time.
-      - Only what can be drawn with code: big type, numbers counting, charts,
-        diagrams, shapes. No people, no faces, no realistic scenes.
-      - A last shot that names the source.
+      - Only what can be drawn with code: type, counters, charts, diagrams, maps,
+        lines, shapes, and flat cartoon characters if canon allows them. No realistic
+        people or scenes.
+      - For fact, a last shot that names the source. For story and character, a last
+        shot that lands the ending.
       - `Voice:` for the shots that have narration, the exact words a narrator says,
         at about 2 words a second. Numbers take longer to say than to read, so a
-        line may run into the next shot, and that shot can stay silent. Every claim
-        must be in the source. Leave it out only if the person asks for no voice.
-      - `Source:` with the publisher, year and URL, and the sentence you relied on.
+        line may run into the next shot, and that shot can stay silent. For fact, every
+        claim must be in the source. Leave it out only if the person asks for no voice.
+      - For fact, `Source:` with the publisher, year and URL, and the sentence you
+        relied on. For story and character, `Fiction:` and one line saying it's invented.
 
       Then address @{show}-designer. Do not write captions, and do not judge your
       own hook.
@@ -170,8 +228,8 @@ agents:
       Write these in `episodes/ep-NN/`:
 
       - `prompts.md`: one block per shot, numbered to match the script, restating
-        every canon value that applies: colours, type, motion. Include the source
-        line, and three thumbnail ideas that work at 120 pixels wide.
+        every canon value that applies: colours, type, motion, audio. Include the
+        `Source:` or `Fiction:` line, and three thumbnail ideas that work at 120 pixels wide.
       - `manifest.md`: the format and settings actually used per shot.
 
       You stop at the files. Never describe an image you did not make.
@@ -181,7 +239,7 @@ agents:
       when the checker exits 0.
 
       When the person brings back a cold verdict, connect_to_room to
-      {show}-publish, post the script, the source, the checker output verbatim,
+      {show}-publish, post the script, the `Source:` or `Fiction:` line, the checker output verbatim,
       the verdict and the path of the reel, and address @{show}-promoter and
       @{show}-desk. Say that the cold reader is an agent unless the person told
       you otherwise. You are a member of both rooms. Reconnect to {show}-writing
@@ -208,14 +266,16 @@ agents:
       Work in `episodes/ep-NN/render/`, using the tools in the repository's
       `tools/` folder (`find . -name reel-starter.html`):
 
-      - Copy `reel-starter.html` to `reel.html` and replace its scenes with this
-        episode. Every moving thing must depend only on time, through `seek(t)`.
+      - Copy `reel-starter.html` to `reel.html`, or `character-starter.html` when the
+        format is character ({format}), and replace its scenes with this episode.
+        Every moving thing must depend only on time, through `seek(t)`.
       - `node <tools>/render-frames.mjs reel.html --stills 1,2,5 --out-dir stills`
         writes frames. Look at one from every shot before the full render, and fix
-        text that overflows, collides or is hard to read. It must look bold and
-        finished, not like a slide deck.
+        text that overflows, collides or is hard to read. It must look
+        deliberate and finished, not like a slide deck.
       - `python3 <tools>/make-beat.py beat.wav --seconds N --hits T --cuts A,B,C`
-        writes the music, with impacts on your biggest moments.
+        writes the music, with impacts on your biggest moments. If canon's
+        `look.audio` says no music, skip this and leave `--beat` off the next step.
       - Put the script's `Voice:` lines in `voice.json`, word for word, as
         `[{"at": 0.1, "until": 3, "text": "..."}]`, with `until` no later than the
         next line's start. `uv run <tools>/make-voice.py voice.json mix.wav --beat beat.wav`
@@ -292,7 +352,8 @@ agents:
     instructions: |
       You write the post for Instagram Reels, YouTube Shorts and TikTok. One
       caption per platform, ready to paste. Spend the first line, since most people
-      read nothing else. Name the fact's source in each caption.
+      read nothing else. For a fact, name the source in each caption. For a story,
+      never imply that it really happened.
 
       You do not know what is trending from memory. Search and cite where each
       hashtag came from, or label the block `guessed` and say you did not
@@ -315,10 +376,11 @@ agents:
     instructions: |
       You write for LinkedIn and X, ready to paste.
 
-      LinkedIn: one idea stated plainly. What the fact is, why it surprises people,
-      and where it comes from. No hook ladder, no one-word lines, no emoji bullets.
+      LinkedIn: one idea stated plainly. For a fact: what it is, why it surprises
+      people and where it comes from. For a story: what it's about and why it stays
+      with you, and say it's fiction. No hook ladder, no one-word lines, no emoji bullets.
 
-      X: the shortest true version, with the source. A thread only if the idea truly
+      X: the shortest true version, with the source if it's a fact. A thread only if the idea truly
       needs one.
 
       Do not call the cold reader a person unless a person told you it was one.
@@ -343,8 +405,8 @@ rooms:
       - "{show}-continuity"
       - "{show}-renderer"
     instructions: |
-      An idea arrives. The writer finds a sourced fact and scripts it against canon,
-      the designer turns it into a spec that restates canon verbatim, the continuity
+      An idea arrives. The writer scripts it against canon, from a sourced fact or an
+      original story, the designer turns it into a spec that restates canon verbatim, the continuity
       editor checks both and runs the checker, and the renderer generates the reel
       with code.
 
@@ -372,33 +434,13 @@ rooms:
           ## The show
 
           ```canon
-          - attr: show.title
-            value: Sounds Fake, Is True
-            required: true
-          - attr: show.proof
-            value: Source:
-            required: true
-          - attr: show.people
-            value: no people on screen
-            forbid: [talking head, presenter, actor, realistic person, stock footage]
-            required: true
+          {canon_show}
           ```
 
           ## The look
 
           ```canon
-          - attr: look.type
-            value: giant condensed uppercase type
-            forbid: [serif, handwritten, script font]
-            required: true
-          - attr: look.palette
-            value: ink, paper, coral, yellow, mint
-            forbid: [pastel, gradient mesh, neon purple]
-            required: true
-          - attr: look.motion
-            value: hard cuts on the beat
-            forbid: [slow fade, ken burns]
-            required: true
+          {canon_look}
           ```
 
           ## The format

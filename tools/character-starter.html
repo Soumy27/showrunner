@@ -1,0 +1,64 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Character starter</title>
+<style>
+:root{--sky:#17233f;--glow:#ffb35c;--ground:#0e1629;--skin:#ffcfa6;--top:#ff6a3d;--legs:#27365c;--hair:#20182b;--paper:#fff6e6}
+*{box-sizing:border-box;margin:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--sky);font-family:"Avenir Next","Helvetica Neue",sans-serif}
+svg{position:absolute;inset:0}
+#line{position:absolute;left:90px;right:90px;top:240px;color:var(--paper);font-size:84px;font-weight:700;line-height:1.08}
+</style></head><body>
+<svg viewBox="0 0 1080 1920" width="1080" height="1920">
+  <circle id="sun" cx="780" cy="760" r="170" fill="var(--glow)"/>
+  <g id="hills" fill="#22325a"><circle cx="150" cy="1560" r="330"/><circle cx="660" cy="1610" r="390"/><circle cx="1210" cy="1540" r="340"/></g>
+  <rect y="1420" width="1080" height="500" fill="var(--ground)"/>
+  <!-- The character. Each limb turns at its top joint, so a pose is a few angles. -->
+  <g id="who" stroke-linecap="round">
+    <ellipse cx="0" cy="8" rx="120" ry="20" fill="#0008"/>
+    <g id="body">
+      <path id="legB" d="M-30 -190V-14H6" stroke="#1c2947" stroke-width="58" stroke-linejoin="round" fill="none"/>
+      <path id="armB" d="M-44 -380V-250" stroke="#d94f27" stroke-width="44" fill="none"/>
+      <path id="legF" d="M32 -190V-14H68" stroke="var(--legs)" stroke-width="58" stroke-linejoin="round" fill="none"/>
+      <rect x="-82" y="-420" width="164" height="250" rx="70" fill="var(--top)"/>
+      <path id="armF" d="M44 -380V-250" stroke="#ff8a63" stroke-width="44" fill="none"/>
+      <g id="head">
+        <circle cy="-525" r="118" fill="var(--skin)"/>
+        <path d="M-118 -535A118 118 0 0 1 118 -535C70 -590 -40 -600 -118 -535Z" fill="var(--hair)"/>
+        <ellipse id="eyeL" cx="-6" cy="-525" rx="12" ry="17" fill="var(--hair)"/>
+        <ellipse id="eyeR" cx="62" cy="-525" rx="12" ry="17" fill="var(--hair)"/>
+        <path d="M2 -478Q30 -456 58 -478" stroke="var(--hair)" stroke-width="9" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>
+<div id="line"></div>
+<script>
+// Replace this list with the episode. Every moving thing depends only on t.
+const LINES=[[0,3,"This is a starter."],[3,6,"Swap the scenes."]];
+const $=id=>document.getElementById(id);
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>{x=clamp(x);return x*x*(3-2*x)};
+const turn=(id,deg,x,y)=>$(id).setAttribute('transform',`rotate(${deg} ${x} ${y})`);
+function pose(t,walking){
+  const swing=walking?Math.sin(t*7):0, bob=walking?Math.abs(Math.sin(t*7))*-12:Math.sin(t*2)*-3;
+  $('body').setAttribute('transform',`translate(0 ${bob})`);
+  turn('legF',swing*26,32,-190);turn('legB',-swing*26,-30,-190);
+  turn('armF',-swing*24,44,-380);turn('armB',swing*24,-44,-380);
+  // A short blink every four seconds.
+  const blink=(t%4)<.12?.12:1;
+  ['eyeL','eyeR'].forEach(e=>{$(e).setAttribute('ry',17*blink)});
+  turn('head',walking?swing*2:Math.sin(t*1.3)*3,0,-420);
+}
+function seek(t){
+  const walkEnd=4,x=-180+ease(t/walkEnd)*680;
+  $('who').setAttribute('transform',`translate(${x} 1560)`);
+  pose(t,t<walkEnd);
+  $('sun').setAttribute('cy',760+t*6);
+  $('hills').setAttribute('transform',`translate(${-t*14} 0)`);
+  const now=LINES.find(([a,b])=>t>=a&&t<b);
+  $('line').textContent=now?now[2]:'';
+  $('line').style.opacity=now?ease((t-now[0])/.3):0;
+}
+window.seek=seek;
+window.ready=document.fonts.ready.then(()=>{seek(0);return true});
+</script>
+</body></html>

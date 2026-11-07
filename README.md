@@ -79,6 +79,18 @@ Switch Core 0.31.0, Console 0.40.1 and Mattermost 11.9.0 on one Mac, from one re
 Earlier test runs of a different series are in [`examples/live-run/`](examples/live-run/) and
 [`examples/mattermost-run/`](examples/mattermost-run/).
 
+## Three kinds of series
+
+The same template makes three kinds of series. You pick one when you create the rooms, and its look is locked in canon.
+
+| Format | What the writer does | Proof so far |
+|---|---|---|
+| `fact` | Finds and sources a surprising fact | One full run |
+| `story` | Invents an original story, marked `Fiction:` | See Limits |
+| `character` | Writes a story led by a simple flat cartoon character, starting from `tools/character-starter.html` | Starter page only; no agent run |
+
+Canon to paste for the last two is in [`examples/formats/`](examples/formats/).
+
 ## The checker
 
 `check-canon.py` compares an episode's spec and manifest with canon. It uses only the standard library.
@@ -103,7 +115,7 @@ most likely to creep in:
 ## The render tools
 
 `tools/render-frames.mjs` draws an HTML page frame by frame in headless Chrome and encodes it with ffmpeg.
-`tools/reel-starter.html` is the starting page, and `tools/make-beat.py` generates the music.
+`tools/reel-starter.html` is the starting page, `tools/character-starter.html` is a simple walking character, and `tools/make-beat.py` generates the music.
 `tools/make-voice.py` speaks timed lines with a local voice over that beat, and refuses lines that can't fit.
 
 ## Run it
@@ -153,7 +165,8 @@ curl -b jar -X PATCH "$SERVER/gateway/documents/$DOC_ID" -H 'Content-Type: appli
 - **Voice not yet run by the agents.** The writer and renderer now have voice instructions, but no agent has used
   them. `reel-voiced.mp4` was made by running the tool directly on the finished reel. Its timing is measured, and
   no check confirms how it sounds or how each word is pronounced.
-- **One topic so far.** Only one episode of this series has been made, so requests on other topics are untested.
+- **One finished fact episode so far.** Requests on other topics are untested, and so are the `story` and `character` formats until a run says otherwise.
+- **Characters are simple.** They are flat shapes drawn with code, so expect charm rather than studio animation.
 - **Nobody has watched it in motion.** The agents checked still frames and measured the audio.
 - **No audience data.** The cold reader is an agent reading frames. No real viewer has seen a reel.
 - **Facts rest on what agents can open.** This episode rests on an abstract, because the full paper didn't open.
@@ -199,6 +212,7 @@ tests/test_check_canon.py            checker tests
 examples/soundsfake-run/             the reel, captions and record of the main run
 examples/mattermost-run/             an earlier test run, in Mattermost
 examples/live-run/                   the first test run, in Switch's own rooms
+examples/formats/                    canon to paste for story and character series
 examples/ep-07/                      an episode with two planted mistakes
 examples/series-canon.md             canon for that example
 ```
